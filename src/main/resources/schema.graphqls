@@ -1,0 +1,18 @@
+type Query {
+    wishById(id: ID): Wish
+}
+
+type Wish {
+    id: ID
+    name: String
+    description: String
+    ageRating: Int
+    giftedFrom: Person
+    givenTo: Person
+}
+
+type Person {
+    id: ID
+    name: String
+    age: Int
+}

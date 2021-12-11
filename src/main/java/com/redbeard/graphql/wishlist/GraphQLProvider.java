@@ -40,7 +40,7 @@ public class GraphQLProvider {
     }
 
     private String loadSchema() throws IOException {
-        URL url = Resources.getResource("schema.graphqls");
+        URL url = Resources.getResource("schema/schema.graphqls");
         return Resources.toString(url, Charsets.UTF_8);
     }
 

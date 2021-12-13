@@ -1,5 +1,8 @@
 package com.redbeard.graphql.wishlist;
 
+import com.redbeard.graphql.wishlist.repository.GiftedFromPersonDataFetcher;
+import com.redbeard.graphql.wishlist.repository.GivenToPersonDataFetcher;
+import com.redbeard.graphql.wishlist.repository.WishDataFetcher;
 import graphql.GraphQL;
 import graphql.schema.GraphQLSchema;
 import graphql.schema.idl.RuntimeWiring;
@@ -20,22 +23,28 @@ import static graphql.schema.idl.TypeRuntimeWiring.newTypeWiring;
 
 @Component
 public class GraphQLProvider {
-
     private GraphQL graphQL;
 
-    private final GraphQLDataFetchers graphQLDataFetchers;
+    private final WishDataFetcher wishDataFetcher;
+    private final GiftedFromPersonDataFetcher giftedFromPersonDataFetcher;
+    private final GivenToPersonDataFetcher givenToPersonDataFetcher;
 
-    public GraphQLProvider(GraphQLDataFetchers graphQLDataFetchers) {
-        this.graphQLDataFetchers = graphQLDataFetchers;
+    @Value("/schema/schema.graphqls")
+    private ClassPathResource schema;
+
+    public GraphQLProvider(WishDataFetcher wishDataFetcher,
+                           GiftedFromPersonDataFetcher giftedFromPersonDataFetcher,
+                           GivenToPersonDataFetcher givenToPersonDataFetcher) {
+
+        this.wishDataFetcher = wishDataFetcher;
+        this.giftedFromPersonDataFetcher = giftedFromPersonDataFetcher;
+        this.givenToPersonDataFetcher = givenToPersonDataFetcher;
     }
 
     @Bean
     public GraphQL graphQL() {
         return graphQL;
     }
-
-    @Value("/schema/schema.graphqls")
-    private ClassPathResource schema;
 
     @PostConstruct
     public void init() throws IOException {
@@ -54,10 +63,10 @@ public class GraphQLProvider {
     private RuntimeWiring buildWiring() {
         return RuntimeWiring.newRuntimeWiring()
                 .type(newTypeWiring("Query")
-                        .dataFetcher("wishById", graphQLDataFetchers.getWishByIdDataFetcher()))
+                        .dataFetcher("wishById", wishDataFetcher))
                 .type(newTypeWiring("Wish")
-                        .dataFetcher("givenTo", graphQLDataFetchers.getGivenToDataFetcher())
-                        .dataFetcher("giftedFrom", graphQLDataFetchers.getGiftedFromDataFetcher()))
+                        .dataFetcher("givenTo", givenToPersonDataFetcher)
+                        .dataFetcher("giftedFrom", giftedFromPersonDataFetcher))
                 .build();
     }
 }

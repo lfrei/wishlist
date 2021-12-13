@@ -22,7 +22,7 @@ import java.io.InputStreamReader;
 import static graphql.schema.idl.TypeRuntimeWiring.newTypeWiring;
 
 @Component
-public class GraphQLProvider {
+public class WishlistProvider {
     private GraphQL graphQL;
 
     private final WishDataFetcher wishDataFetcher;
@@ -32,9 +32,9 @@ public class GraphQLProvider {
     @Value("/schema/schema.graphqls")
     private ClassPathResource schema;
 
-    public GraphQLProvider(WishDataFetcher wishDataFetcher,
-                           GiftedFromPersonDataFetcher giftedFromPersonDataFetcher,
-                           GivenToPersonDataFetcher givenToPersonDataFetcher) {
+    public WishlistProvider(WishDataFetcher wishDataFetcher,
+                            GiftedFromPersonDataFetcher giftedFromPersonDataFetcher,
+                            GivenToPersonDataFetcher givenToPersonDataFetcher) {
 
         this.wishDataFetcher = wishDataFetcher;
         this.giftedFromPersonDataFetcher = giftedFromPersonDataFetcher;

@@ -18,7 +18,6 @@ public class WishlistProvider {
 
     @DgsData(parentType = "Wish", field = "givenTo")
     public Person givenTo(DgsDataFetchingEnvironment dfe) {
-
         Wish wish = dfe.getSource();
         return Person.examples()
                 .stream()
@@ -29,7 +28,6 @@ public class WishlistProvider {
 
     @DgsData(parentType = "Wish", field = "giftedFrom")
     public Person giftedFrom(DgsDataFetchingEnvironment dfe) {
-
         Wish wish = dfe.getSource();
         return Person.examples()
                 .stream()

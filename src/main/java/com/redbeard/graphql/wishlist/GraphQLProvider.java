@@ -1,19 +1,20 @@
 package com.redbeard.graphql.wishlist;
 
-import com.google.common.base.Charsets;
-import com.google.common.io.Resources;
 import graphql.GraphQL;
 import graphql.schema.GraphQLSchema;
 import graphql.schema.idl.RuntimeWiring;
 import graphql.schema.idl.SchemaGenerator;
 import graphql.schema.idl.SchemaParser;
 import graphql.schema.idl.TypeDefinitionRegistry;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import java.io.IOException;
-import java.net.URL;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 
 import static graphql.schema.idl.TypeRuntimeWiring.newTypeWiring;
 
@@ -33,19 +34,18 @@ public class GraphQLProvider {
         return graphQL;
     }
 
+    @Value("/schema/schema.graphqls")
+    private ClassPathResource schema;
+
     @PostConstruct
     public void init() throws IOException {
-        GraphQLSchema graphQLSchema = buildSchema(loadSchema());
+        InputStream schemaInputStream = schema.getInputStream();
+        GraphQLSchema graphQLSchema = buildSchema(new InputStreamReader(schemaInputStream));
         this.graphQL = GraphQL.newGraphQL(graphQLSchema).build();
     }
 
-    private String loadSchema() throws IOException {
-        URL url = Resources.getResource("schema/schema.graphqls");
-        return Resources.toString(url, Charsets.UTF_8);
-    }
-
-    private GraphQLSchema buildSchema(String sdl) {
-        TypeDefinitionRegistry typeRegistry = new SchemaParser().parse(sdl);
+    private GraphQLSchema buildSchema(InputStreamReader reader) {
+        TypeDefinitionRegistry typeRegistry = new SchemaParser().parse(reader);
         RuntimeWiring runtimeWiring = buildWiring();
         SchemaGenerator schemaGenerator = new SchemaGenerator();
         return schemaGenerator.makeExecutableSchema(typeRegistry, runtimeWiring);

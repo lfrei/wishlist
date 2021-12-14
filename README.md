@@ -1,12 +1,17 @@
 # Wishlist using GraphQL
 
-A simple implementation of a GraphQL Server with [graphql-java](https://github.com/graphql-java/graphql-java). Use branch `dgs` to see the same implementation with the [dgs-framework by netflix](https://github.com/netflix/dgs-framework/)
+A simple implementation of a GraphQL Server with [graphql-java](https://github.com/graphql-java/graphql-java). 
+Use branch `dgs` to see the same implementation with the [dgs-framework by netflix](https://github.com/netflix/dgs-framework/) that is building on top of graphql-java.
 
 ## Schema
 
 ```
 type Query {
     wishById(id: ID): Wish
+}
+
+type Mutation {
+    createWish(id: String!, name: String!, description: String!, ageRating: Int): Wish
 }
 
 type Wish {
@@ -25,7 +30,48 @@ type Person {
 }
 ```
 
+## Examples
+
+### Query
+
+```
+{
+  wishById(id: "wish-1"){
+    name,
+    description
+    ageRating
+    givenTo {
+      name
+    }
+    giftedFrom {
+      name
+    }
+  }
+}
+```
+
+### Mutation
+
+```
+mutation {
+  createWish(
+    id: "wish-2",
+    name: "Gin",
+    description: "Monkey 47 Gin, 50cl",
+    ageRating: 18
+  ){
+    name,
+    description
+    ageRating
+  }
+}
+```
+
 ## Thoughts about GraphQL
+
+### Usage
+
+Twitter has recently migrated to graphql-java, see [discussion](https://github.com/graphql-java/graphql-java/discussions/2591).
 
 ### Language Support
 
@@ -56,7 +102,7 @@ or act like a BFF [4].
 
 Graphql supports writes by using the `mutation` keyword [5]. Similar to REST, 
 any query could theoretically modify data, but using `mutation` is recommended. 
-Graphql is mostly used for read queries, while writes are still made using REST [3].
+Graphql is mostly used for read queries, while writes are often still made using REST [3].
 
 ### Error Handling
 

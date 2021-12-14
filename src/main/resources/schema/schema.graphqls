@@ -2,6 +2,10 @@ type Query {
     wishById(id: ID): Wish
 }
 
+type Mutation {
+    createWish(id: String!, name: String!, description: String!, ageRating: Int): Wish
+}
+
 type Wish {
     id: ID
     name: String

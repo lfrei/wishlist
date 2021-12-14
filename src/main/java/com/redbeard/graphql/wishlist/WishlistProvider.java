@@ -1,5 +1,6 @@
 package com.redbeard.graphql.wishlist;
 
+import com.redbeard.graphql.wishlist.repository.CreateWishDataFetcher;
 import com.redbeard.graphql.wishlist.repository.GiftedFromPersonDataFetcher;
 import com.redbeard.graphql.wishlist.repository.GivenToPersonDataFetcher;
 import com.redbeard.graphql.wishlist.repository.WishDataFetcher;
@@ -28,17 +29,20 @@ public class WishlistProvider {
     private final WishDataFetcher wishDataFetcher;
     private final GiftedFromPersonDataFetcher giftedFromPersonDataFetcher;
     private final GivenToPersonDataFetcher givenToPersonDataFetcher;
+    private final CreateWishDataFetcher createWishDataFetcher;
 
     @Value("/schema/schema.graphqls")
     private ClassPathResource schema;
 
     public WishlistProvider(WishDataFetcher wishDataFetcher,
                             GiftedFromPersonDataFetcher giftedFromPersonDataFetcher,
-                            GivenToPersonDataFetcher givenToPersonDataFetcher) {
+                            GivenToPersonDataFetcher givenToPersonDataFetcher,
+                            CreateWishDataFetcher createWishDataFetcher) {
 
         this.wishDataFetcher = wishDataFetcher;
         this.giftedFromPersonDataFetcher = giftedFromPersonDataFetcher;
         this.givenToPersonDataFetcher = givenToPersonDataFetcher;
+        this.createWishDataFetcher = createWishDataFetcher;
     }
 
     @Bean
@@ -67,6 +71,8 @@ public class WishlistProvider {
                 .type(newTypeWiring("Wish")
                         .dataFetcher("givenTo", givenToPersonDataFetcher)
                         .dataFetcher("giftedFrom", giftedFromPersonDataFetcher))
+                .type(newTypeWiring("Mutation")
+                        .dataFetcher("createWish", createWishDataFetcher))
                 .build();
     }
 }

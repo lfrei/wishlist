@@ -71,7 +71,9 @@ mutation {
 
 ### Usage
 
-Twitter has recently migrated to graphql-java, see [discussion](https://github.com/graphql-java/graphql-java/discussions/2591).
+- Twitter is using graphql and has recently migrated to graphql-java, see [discussion](https://github.com/graphql-java/graphql-java/discussions/2591).
+- Github has a [graphql api](https://docs.github.com/en/graphql/overview/about-the-graphql-api) and explains why it has moved to [graphql](https://github.blog/2016-09-14-the-github-graphql-api/).
+- Graphql adopter [landscape](https://landscape.graphql.org/?category=graph-ql-adopter&grouping=category&style=borderless&zoom=150)
 
 ### Language Support
 
